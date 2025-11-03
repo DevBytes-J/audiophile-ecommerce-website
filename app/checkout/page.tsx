@@ -1,26 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "convex/react";
+// 💡 FIX: Import both useMutation and useAction
+import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCart } from "@/hooks/use-cart";
 import { checkoutFormSchema, type CheckoutFormValues } from "@/lib/validations";
 import Image from "next/image";
 
 import Navbar from "@/Components/layout/navbar";
-import InputGroup from "@/Components/checkout/form-input"; 
+import InputGroup from "@/Components/checkout/form-input";
 import CustomRadio from "@/Components/checkout/CustomRadio";
-import CashOnDeliveryMessage from "@/Components/checkout/CashOnDeliveryMessage"; 
+import CashOnDeliveryMessage from "@/Components/checkout/CashOnDeliveryMessage";
+import OrderConfirmationModal from "@/Components/order/order-confirmation-modal";
+
+// Type Definition for Order Data to pass to the Modal and Email
+interface OrderSummary {
+  orderId: string;
+  items: Array<{
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image: string;
+  }>;
+  grandTotal: number;
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // State for Modal and Order Data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderData, setOrderData] = useState<OrderSummary | null>(null);
+
+  // State for Hydration Fix
+  const [isClient, setIsClient] = useState(false);
+
   const { items, getSubtotal, getVAT, getShipping, getGrandTotal, clearCart } =
     useCart();
+
+  // Convex Mutations/Actions
   const createOrder = useMutation(api.orders.createOrder);
+  // 💡 FIX: Changed hook from useMutation to useAction
+  const sendConfirmationEmail = useAction(api.email.sendOrderConfirmation);
+
+  // Hydration Fix: Set isClient to true after component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const {
     register,
@@ -39,6 +71,7 @@ export default function CheckoutPage() {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(price);
   };
 
@@ -48,6 +81,7 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
+      // 1. Create the Order in Convex (Mutation)
       const result = await createOrder({
         customerDetails: {
           name: data.name,
@@ -84,8 +118,38 @@ export default function CheckoutPage() {
             : undefined,
       });
 
+      // Prepare the data structure for the modal and email
+      const orderSummaryData: OrderSummary = {
+        orderId: result.orderId,
+        items: items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+        })),
+        grandTotal: getGrandTotal(),
+      };
+
+      // 2. Trigger the Email (Action - Non-blocking)
+      sendConfirmationEmail({
+        customerEmail: data.email,
+        orderId: result.orderId,
+        items: orderSummaryData.items.map(({ name, price, quantity }) => ({
+          name,
+          price,
+          quantity,
+        })),
+        grandTotal: orderSummaryData.grandTotal,
+      }).catch((err) => {
+        console.error("Failed to send confirmation email:", err);
+        // Note: Email failure does not prevent order confirmation
+      });
+
+      // 3. Open the Modal and Clear Cart
+      setOrderData(orderSummaryData);
       clearCart();
-      router.push(`/confirmation?orderId=${result.orderId}`);
+      setIsModalOpen(true);
     } catch (err) {
       console.error("Checkout error:", err);
       setIsSubmitting(false);
@@ -111,7 +175,7 @@ export default function CheckoutPage() {
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-[165px] py-12">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col lg:flex-row gap-8">
-              {/* Form Content */}
+              {/* Form Content (Left) */}
               <div className="lg:flex-1 bg-white rounded-lg p-6 md:p-8 lg:p-12">
                 <h1 className="text-[28px] md:text-[32px] font-bold tracking-[1.15px] uppercase mb-8">
                   Checkout
@@ -259,66 +323,79 @@ export default function CheckoutPage() {
                   Summary
                 </h2>
 
-                <div className="space-y-6 mb-8">
-                  {items.map((item) => (
-                    <div key={item.id} className="flex items-center gap-4">
-                      <div className="relative w-16 h-16 rounded-lg bg-[#F1F1F1]">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-contain p-2"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-[15px] font-bold truncate">
-                          {item.name.split(" ")[0]}
-                        </h3>
-                        <p className="text-[14px] text-black/50 font-bold">
-                          {formatPrice(item.price)}
-                        </p>
-                      </div>
-                      <span className="text-[15px] text-black/50 font-bold">
-                        x{item.quantity}
-                      </span>
+                {/* START OF HYDRATION FIX */}
+                {isClient ? (
+                  <>
+                    <div className="space-y-6 mb-8">
+                      {items.map((item) => (
+                        <div key={item.id} className="flex items-center gap-4">
+                          <div className="relative w-16 h-16 rounded-lg bg-[#F1F1F1]">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-contain p-2"
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-[15px] font-bold truncate">
+                              {item.name.split(" ")[0]}
+                            </h3>
+                            <p className="text-[14px] text-black/50 font-bold">
+                              {formatPrice(item.price)}
+                            </p>
+                          </div>
+                          <span className="text-[15px] text-black/50 font-bold">
+                            x{item.quantity}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
 
-                <div className="space-y-2 mb-8">
-                  <div className="flex justify-between">
-                    <span className="text-[15px] text-black/50 uppercase">
-                      Total
-                    </span>
-                    <span className="text-[18px] font-bold">
-                      {formatPrice(getSubtotal())}
-                    </span>
+                    <div className="space-y-2 mb-8">
+                      <div className="flex justify-between">
+                        <span className="text-[15px] text-black/50 uppercase">
+                          Total
+                        </span>
+                        <span className="text-[18px] font-bold">
+                          {formatPrice(getSubtotal())}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[15px] text-black/50 uppercase">
+                          Shipping
+                        </span>
+                        <span className="text-[18px] font-bold">
+                          {formatPrice(getShipping())}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[15px] text-black/50 uppercase">
+                          VAT (Included)
+                        </span>
+                        <span className="text-[18px] font-bold">
+                          {formatPrice(getVAT())}
+                        </span>
+                      </div>
+                      <div className="flex justify-between pt-4">
+                        <span className="text-[15px] text-black/50 uppercase">
+                          Grand Total
+                        </span>
+                        <span className="text-[18px] font-bold text-[#D87D4A]">
+                          {formatPrice(getGrandTotal())}
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Fallback while loading on the client side
+                  <div className="space-y-4 py-8">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[15px] text-black/50 uppercase">
-                      Shipping
-                    </span>
-                    <span className="text-[18px] font-bold">
-                      {formatPrice(getShipping())}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[15px] text-black/50 uppercase">
-                      VAT (Included)
-                    </span>
-                    <span className="text-[18px] font-bold">
-                      {formatPrice(getVAT())}
-                    </span>
-                  </div>
-                  <div className="flex justify-between pt-4">
-                    <span className="text-[15px] text-black/50 uppercase">
-                      Grand Total
-                    </span>
-                    <span className="text-[18px] font-bold text-[#D87D4A]">
-                      {formatPrice(getGrandTotal())}
-                    </span>
-                  </div>
-                </div>
+                )}
+                {/* END OF HYDRATION FIX */}
 
                 <button
                   type="submit"
@@ -332,6 +409,20 @@ export default function CheckoutPage() {
           </form>
         </div>
       </div>
+
+      {/* RENDER THE MODAL */}
+      {orderData && (
+        <OrderConfirmationModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setIsSubmitting(false);
+          }}
+          orderId={orderData.orderId}
+          items={orderData.items}
+          grandTotal={orderData.grandTotal}
+        />
+      )}
     </>
   );
 }

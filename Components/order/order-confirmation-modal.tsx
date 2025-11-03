@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { Check } from 'lucide-react'; // Keeping this for reference, but using a div for the custom icon
 
 interface OrderItem {
   id: string;
@@ -45,7 +45,9 @@ export default function OrderConfirmationModal({
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
+      // Force no fractional digits to match the screenshot style
       minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(price);
   };
 
@@ -54,47 +56,64 @@ export default function OrderConfirmationModal({
   const displayItems = items.slice(0, 1); // Show first item
   const remainingCount = items.length - 1;
 
+  // Set the correct colors based on the screenshot
+  const PRIMARY_ORANGE = "#D87D4A";
+  const LIGHT_GRAY = "#F1F1F1";
+
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop: Fades out the background */}
       <div className="fixed inset-0 bg-black/50 z-50 transition-opacity" />
 
-      {/* Modal */}
+      {/* Modal Container: Centers the modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
         <div className="bg-white rounded-lg max-w-[540px] w-full max-h-[90vh] overflow-y-auto">
           <div className="p-8 md:p-12">
-            {/* Success Icon */}
-            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mb-6">
-              <CheckCircle2 className="w-8 h-8 text-white" strokeWidth={2.5} />
+            {/* Success Icon: Custom checkmark for exact visual match */}
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mb-6"
+              style={{ backgroundColor: PRIMARY_ORANGE }}
+            >
+              {/* This simple div/svg structure matches the screenshot's icon */}
+              <div className="text-white text-3xl font-extrabold ">
+                <Check size={32} strokeWidth={3} />
+              </div>
             </div>
 
             {/* Title */}
             <h1 className="text-[24px] md:text-[32px] font-bold tracking-[0.86px] md:tracking-[1.15px] uppercase mb-4 md:mb-6">
-              Thank you <br />
-              for your order
+              THANK YOU <br />
+              FOR YOUR ORDER
             </h1>
 
             <p className="text-[15px] text-black/50 leading-[25px] mb-6 md:mb-8">
               You will receive an email confirmation shortly.
             </p>
 
-            {/* Order Summary */}
-            <div className="rounded-lg overflow-hidden mb-6 md:mb-12">
-              <div className="bg-light-gray p-6">
+            {/* Order Summary Container */}
+            <div className="rounded-lg overflow-hidden mb-6 md:mb-12 flex flex-col md:flex-row">
+              {/* Left Side: Items (Wider section on desktop) */}
+              <div
+                className="p-6 flex-1"
+                style={{ backgroundColor: LIGHT_GRAY }}
+              >
                 {/* First Item */}
                 {displayItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4 mb-3">
-                    <div className="relative w-[50px] h-[50px] rounded-lg overflow-hidden bg-white shrink-0">
+                  <div key={item.id} className="flex items-center gap-4">
+                    <div className="relative w-[50px] h-[50px] rounded-lg overflow-hidden shrink-0">
+                      {/* Assuming item.image is a full path or can be resolved */}
                       <Image
                         src={item.image}
                         alt={item.name}
-                        fill
-                        className="object-contain p-2"
+                        width={64}
+                        height={64}
+                        className="object-contain p-1"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[15px] font-bold truncate">
-                        {item.name}
+                        {item.name.split(" ")[0]}{" "}
+                        {/* Show only the first word, e.g., 'XX99' */}
                       </h3>
                       <p className="text-[14px] text-black/50 font-bold">
                         {formatPrice(item.price)}
@@ -118,10 +137,10 @@ export default function OrderConfirmationModal({
                 )}
               </div>
 
-              {/* Grand Total */}
-              <div className="bg-black p-6">
-                <p className="text-[15px] text-white/50 uppercase mb-2">
-                  Grand Total
+              {/* Right Side: Grand Total (Black background) */}
+              <div className="bg-black p-6 flex-1 flex flex-col justify-center">
+                <p className="text-[15px] text-white/50 uppercase mb-1">
+                  GRAND TOTAL
                 </p>
                 <p className="text-[18px] text-white font-bold">
                   {formatPrice(grandTotal)}
@@ -133,9 +152,10 @@ export default function OrderConfirmationModal({
             <Link
               href="/"
               onClick={onClose}
-              className="block w-full bg-primary hover:bg-accent text-white text-[13px] font-bold tracking-[1px] py-4 uppercase transition-colors text-center"
+              className="block w-full text-white text-[13px] font-bold tracking-[1px] py-4 uppercase transition-colors text-center"
+              style={{ backgroundColor: PRIMARY_ORANGE }}
             >
-              Back to Home
+              BACK TO HOME
             </Link>
           </div>
         </div>
