@@ -6,9 +6,9 @@ const CashOnDeliveryMessage = () => {
   return (
     <div className="flex items-start gap-5 mt-6">
       {/* Icon */}
-      <div className="relative w-12 h-12 flex-shrink-0 mt-1">
+      <div className="relative w-12 h-12 shrink-0 mt-1">
         <Image
-          src="/assets/checkout/icon-cash-on-delivery.svg" // Replace with your actual path
+          src="/assets/checkout/icon-cash-on-delivery.svg" 
           alt="Cash on Delivery Icon"
           fill
         />

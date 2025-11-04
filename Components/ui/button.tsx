@@ -19,7 +19,7 @@ export default function Button({
   type = "button",
   className = "",
   disabled = false,
-  style, // Backward compatibility prop
+  style, 
 }: ButtonProps) {
   const baseStyles =
     "inline-block px-8 py-4 text-[13px] font-bold tracking-[1px] uppercase transition-colors duration-200 text-center";

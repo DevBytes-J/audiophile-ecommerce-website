@@ -14,7 +14,6 @@ export default function CheckoutSummary({ formatPrice }: CheckoutSummaryProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This effect just sets a flag once — no cascading re-render issues
     requestAnimationFrame(() => setIsClient(true));
   }, []);
 

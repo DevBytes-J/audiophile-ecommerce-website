@@ -42,7 +42,7 @@ export default function CartModal() {
     <>
       <div className="fixed inset-0 bg-black/50 z-40" onClick={closeCart} />
 
-      <div className="fixed top-[110px] right-6 w-full sm:w-[377px] bg-white rounded-lg shadow-2xl z-50 p-8">
+      <div className="fixed top-[110px] right-8 w-[85%] sm:w-[377px] bg-white rounded-lg shadow-2xl z-50 p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-[18px] font-bold tracking-[1.3px] uppercase">
             Cart ({getTotalItems()})

@@ -1,21 +1,14 @@
-// FILE: Components/checkout/form-input.tsx
-
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 
-// Use a generic type TFieldValues that extends FieldValues
 interface InputGroupProps<TFieldValues extends FieldValues> {
-  // name should be a key of the generic type
   name: keyof TFieldValues;
   label: string;
   placeholder: string;
-  // register should be typed with the generic type
   register: UseFormRegister<TFieldValues>;
   error?: string;
   type?: "text" | "email" | "tel" | "password" | "number";
 }
 
-// Make the component itself generic
-// NOTE: We must ensure InputGroup is being passed the correct type in the parent.
 const InputGroup = <TFieldValues extends FieldValues>({
   name,
   label,
@@ -25,8 +18,6 @@ const InputGroup = <TFieldValues extends FieldValues>({
   type = "text",
 }: InputGroupProps<TFieldValues>) => {
   const isError = !!error;
-
-  // Dynamic classes... (rest of the code is unchanged)
   const inputClasses = `
     w-full px-6 py-4 border rounded-lg text-black bg-white
     placeholder:text-black/40 text-[14px] font-bold

@@ -15,7 +15,7 @@ export default function ConfirmationModalWrapper() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch order from Convex
+  // Fetch from Convex
   const order = useQuery(
     api.orders.getOrderById,
     orderId ? { orderId } : "skip"

@@ -118,7 +118,7 @@ export default function CheckoutPage() {
             : undefined,
       });
 
-      // Prepare the data structure for the modal and email
+      // data structure for the modal and email
       const orderSummaryData: OrderSummary = {
         orderId: result.orderId,
         items: items.map((item) => ({
@@ -131,7 +131,7 @@ export default function CheckoutPage() {
         grandTotal: getGrandTotal(),
       };
 
-      // 2. Trigger the Email (Action - Non-blocking)
+      //  Trigger the Email 
       sendConfirmationEmail({
         customerEmail: data.email,
         orderId: result.orderId,
@@ -143,10 +143,9 @@ export default function CheckoutPage() {
         grandTotal: orderSummaryData.grandTotal,
       }).catch((err) => {
         console.error("Failed to send confirmation email:", err);
-        // Note: Email failure does not prevent order confirmation
       });
 
-      // 3. Open the Modal and Clear Cart
+      //  Open the Modal and Clear Cart
       setOrderData(orderSummaryData);
       clearCart();
       setIsModalOpen(true);
@@ -165,7 +164,7 @@ export default function CheckoutPage() {
           <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-[165px]">
             <button
               onClick={() => router.back()}
-              className="text-black/50 text-[15px] hover:text-[#D87D4A] transition-colors"
+              className="text-black/50 text-[15px] hover:text-[#D87D4A] transition-colors hover:cursor-pointer"
             >
               Go Back
             </button>
@@ -400,7 +399,7 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting || items.length === 0}
-                  className="w-full bg-[#D87D4A] hover:bg-[#FBAF85] text-white text-[13px] font-bold py-4 uppercase tracking-[1px] transition-colors disabled:opacity-50"
+                  className="w-full bg-[#D87D4A] hover:bg-[#FBAF85] text-white text-[13px] font-bold py-4 uppercase tracking-[1px] transition-colors disabled:opacity-50 hover:cursor-pointer"
                 >
                   {isSubmitting ? "Processing..." : "Continue & Pay"}
                 </button>

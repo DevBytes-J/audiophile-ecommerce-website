@@ -99,7 +99,10 @@ export default function Home() {
               <h2 className="text-black text-[28px] font-bold tracking-[2px] uppercase mb-8">
                 {zx7Speaker.name}
               </h2>
-              <Button href={zx7Speaker.link} style="border" />
+              <Button
+                href={zx7Speaker.link}
+                style="border hover:bg-black cursor:pointer hover:text-white"
+              />
             </div>
           </div>
 
@@ -120,7 +123,10 @@ export default function Home() {
               <h2 className="text-black text-[28px] font-bold tracking-[2px] uppercase mb-8">
                 {yx1Earphones.name}
               </h2>
-              <Button href={yx1Earphones.link} style="border" />
+              <Button
+                href={yx1Earphones.link}
+                style="border hover:bg-black cursor:pointer hover:text-white"
+              />
             </div>
           </div>
         </div>

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductsByCategory} from "@/lib/products";
-// import { getProductsByCategory } from "@/lib/products";
 import ProductCard from "@/Components/product/product-card";
 import ProductDetail from "@/Components/product/product-detail";
 import Footer from "@/Components/layout/footer";
@@ -103,14 +102,8 @@ export default async function CategoryPage({
           </div>
         </div>
       </section>
-
-      {/* Category Cards */}
       <ProductCard />
-
-      {/* Product Detail Section */}
       <ProductDetail />
-
-      {/* Footer */}
       <Footer />
     </>
   );

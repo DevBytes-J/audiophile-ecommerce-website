@@ -62,19 +62,15 @@ export default function OrderConfirmationModal({
 
   return (
     <>
-      {/* Backdrop: Fades out the background */}
       <div className="fixed inset-0 bg-black/50 z-50 transition-opacity" />
 
-      {/* Modal Container: Centers the modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
         <div className="bg-white rounded-lg max-w-[540px] w-full max-h-[90vh] overflow-y-auto">
           <div className="p-8 md:p-12">
-            {/* Success Icon: Custom checkmark for exact visual match */}
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center mb-6"
               style={{ backgroundColor: PRIMARY_ORANGE }}
             >
-              {/* This simple div/svg structure matches the screenshot's icon */}
               <div className="text-white text-3xl font-extrabold ">
                 <Check size={32} strokeWidth={3} />
               </div>
@@ -92,7 +88,6 @@ export default function OrderConfirmationModal({
 
             {/* Order Summary Container */}
             <div className="rounded-lg overflow-hidden mb-6 md:mb-12 flex flex-col md:flex-row">
-              {/* Left Side: Items (Wider section on desktop) */}
               <div
                 className="p-6 flex-1"
                 style={{ backgroundColor: LIGHT_GRAY }}
@@ -112,8 +107,7 @@ export default function OrderConfirmationModal({
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[15px] font-bold truncate">
-                        {item.name.split(" ")[0]}{" "}
-                        {/* Show only the first word, e.g., 'XX99' */}
+                        {item.name.split(" ")[0]}
                       </h3>
                       <p className="text-[14px] text-black/50 font-bold">
                         {formatPrice(item.price)}
@@ -125,7 +119,6 @@ export default function OrderConfirmationModal({
                   </div>
                 ))}
 
-                {/* Other Items Count */}
                 {remainingCount > 0 && (
                   <>
                     <hr className="border-black/10 my-3" />
@@ -137,7 +130,7 @@ export default function OrderConfirmationModal({
                 )}
               </div>
 
-              {/* Right Side: Grand Total (Black background) */}
+              {/* Right Side: Grand Total */}
               <div className="bg-black p-6 flex-1 flex flex-col justify-center">
                 <p className="text-[15px] text-white/50 uppercase mb-1">
                   GRAND TOTAL

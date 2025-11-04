@@ -6,13 +6,13 @@ interface EmailOrderItem {
   name: string;
   quantity: number;
   price: number;
-  imageSrc: string; // URL for the image
+  imageSrc: string; 
 }
 
 // Define the props for the entire confirmation email
 interface OrderConfirmationProps {
   orderId: string;
-  orderDate: string; // e.g., "October 26, 2025"
+  orderDate: string; 
   totalAmount: number;
   shippingAddress: string;
   items: EmailOrderItem[];
@@ -238,6 +238,4 @@ export const OrderConfirmationEmail: React.FC<OrderConfirmationProps> = ({
     </body>
   </html>
 );
-
-// Optional: Provide a default export for convenience if using standard imports
 export default OrderConfirmationEmail;

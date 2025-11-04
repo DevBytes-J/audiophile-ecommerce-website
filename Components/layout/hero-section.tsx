@@ -20,7 +20,7 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* Background Image - Desktop (image-hero.jpg) */}
+      {/* Background Image */}
       <div className="hidden lg:block absolute inset-0 w-full h-full">
         <Image
           src="/image-hero.jpg"

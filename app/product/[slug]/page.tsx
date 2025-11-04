@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-// import Link from "next/link";
 import { notFound, useRouter, useParams } from "next/navigation";
 import { getProductBySlug } from "@/lib/products";
 import ProductCard from "@/Components/product/product-card";
@@ -61,7 +60,7 @@ export default function ProductPage() {
         <div className="max-w-[1440px] mx-auto px-[165px] max-[1189px]:px-10 max-[768px]:px-6">
           <button
             onClick={() => router.back()}
-            className="text-black/50 text-[15px] hover:text-primary transition-colors"
+            className="text-black/50 text-[15px] hover:text-primary transition-colors hover:cursor-pointer"
           >
             Go Back
           </button>
@@ -110,16 +109,16 @@ export default function ProductPage() {
                 <div className="flex items-center bg-[#F1F1F1] h-12">
                   <button
                     onClick={decrementQuantity}
-                    className="px-4 h-full hover:text-primary transition-colors text-black/25 font-bold"
+                    className="px-4 h-full hover:text-primary transition-colors text-black/25 font-bold hover:cursor-pointer"
                   >
                     −
                   </button>
-                  <span className="px-4 text-[13px] font-bold min-w-[40px] text-center">
+                  <span className="px-4 text-[13px] font-bold min-w-10 text-center">
                     {quantity}
                   </span>
                   <button
                     onClick={incrementQuantity}
-                    className="px-4 h-full hover:text-primary transition-colors text-black/25 font-bold"
+                    className="px-4 h-full hover:text-primary transition-colors text-black/25 font-bold hover:cursor-pointer"
                   >
                     +
                   </button>
@@ -128,7 +127,7 @@ export default function ProductPage() {
                 {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
-                  className="bg-primary hover:bg-accent text-white text-[13px] font-bold tracking-[1px] px-8 h-12 uppercase transition-colors"
+                  className="bg-primary hover:bg-accent text-white text-[13px] font-bold tracking-[1px] px-8 h-12 uppercase transition-colors hover:cursor-pointer"
                 >
                   ADD TO CART
                 </button>
