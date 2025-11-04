@@ -46,8 +46,6 @@ export default function CheckoutPage() {
 
   // Convex Mutations/Actions
   const createOrder = useMutation(api.orders.createOrder);
-  // 💡 FIX: Changed hook from useMutation to useAction
-  const sendConfirmationEmail = useAction(api.email.sendOrderConfirmation);
 
   // Hydration Fix: Set isClient to true after component mounts
   useEffect(() => {
@@ -132,18 +130,29 @@ export default function CheckoutPage() {
       };
 
       //  Trigger the Email 
-      sendConfirmationEmail({
-        customerEmail: data.email,
-        orderId: result.orderId,
-        items: orderSummaryData.items.map(({ name, price, quantity }) => ({
-          name,
-          price,
-          quantity,
-        })),
-        grandTotal: orderSummaryData.grandTotal,
-      }).catch((err) => {
-        console.error("Failed to send confirmation email:", err);
-      });
+     fetch("/api/send-confirmation", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({
+         customerEmail: data.email,
+         orderId: result.orderId,
+         items: orderSummaryData.items.map(({ name, price, quantity }) => ({
+           name,
+           price,
+           quantity,
+         })),
+         grandTotal: orderSummaryData.grandTotal,
+       }),
+     })
+       .then((res) => res.json())
+       .then((result) => {
+         if (!result.success) {
+           console.error("Email failed:", result.error);
+         }
+       })
+       .catch((err) => {
+         console.error("Failed to send confirmation email:", err);
+       });
 
       //  Open the Modal and Clear Cart
       setOrderData(orderSummaryData);
