@@ -222,7 +222,7 @@ orders: defineTable({     //unique order identifier
 - [ ] User redirects to confirmation page
 - [ ] Back button doesn't resubmit order
 
-## ♿ Accessibility Features
+##  Accessibility Features
 
 -  Semantic HTML structure
 -  ARIA labels on interactive elements
@@ -233,7 +233,7 @@ orders: defineTable({     //unique order identifier
 -  Color contrast compliance (WCAG AA)
 -  Alt text for all images
 
-## 🐛 Known Issues & Limitations
+##  Known Issues & Limitations
 
 - Cart persistence uses localStorage (cleared on browser data reset)
 - Email delivery depends on Resend service availability
@@ -251,7 +251,7 @@ orders: defineTable({     //unique order identifier
 - [ ] Order tracking system
 - [ ] Admin dashboard
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -261,21 +261,19 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Design by [Frontend Mentor](https://www.frontendmentor.io/)
 - Built as part of the Frontend Wizards Stage 3 Challenge
 - Backend powered by [Convex](https://convex.dev/)
 - Emails by [Resend](https://resend.com/)
 
-📬 Contact
+ Contact
 Joanna Bassey - @Bassey_Joanna
 Project Link: https://github.com/DevBytes-J/audiophile-ecommerce
 
 ---
-
-**⭐ If you found this project helpful, please consider giving it a star!**
