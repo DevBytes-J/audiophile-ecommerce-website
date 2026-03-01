@@ -1,21 +1,20 @@
-# 🎧 Audiophile E-Commerce
+# Audiophile E-Commerce
 
 A pixel-perfect, full-stack e-commerce platform for premium audio equipment, built with Next.js, Convex, and modern web technologies.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://your-deployed-url.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://audiophile-ecommerce-website-527b.vercel.app/)
 
-## ✨ Features
+##  Features
 
-- 🎨 **Pixel-Perfect Design** - Faithfully implements the Audiophile Figma design across all breakpoints
-- 📱 **Fully Responsive** - Optimized for mobile (375px), tablet (768px), and desktop (1440px+)
-- 🛒 **Complete Shopping Cart** - Add, remove, and adjust quantities with persistent state
-- ✅ **Robust Checkout Flow** - Multi-step form with real-time validation and error handling
-- 💾 **Backend Integration** - Orders stored in Convex with full CRUD operations
-- 📧 **Transactional Emails** - Beautiful, responsive order confirmation emails via Resend
-- ♿ **Accessible** - WCAG compliant with keyboard navigation and screen reader support
-- 🔒 **Edge Case Handling** - Comprehensive validation and error recovery
+-  **Pixel-Perfect Design** - Implements the Audiophile Figma design across all breakpoints
+-  **Fully Responsive** - Optimized for mobile (375px), tablet (768px), and desktop (1440px+)
+-  **Complete Shopping Cart** - Add, remove, and adjust quantities with persistent state
+-  **Robust Checkout Flow** - Multi-step form with real-time validation and error handling
+-  **Backend Integration** - Orders stored in Convex with full CRUD operations
+- **Transactional Emails** - Beautiful, responsive order confirmation emails via Resend
+-  **Accessible** - WCAG compliant with keyboard navigation and screen reader support
+-  **Edge Case Handling** - Comprehensive validation and error recovery
 
-## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -74,7 +73,7 @@ npm run dev
 
 Visit [http://localhost:3000](http://localhost:3000) to see the app.
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 audiophile-ecommerce/
@@ -193,29 +192,7 @@ orders: defineTable({     //unique order identifier
     .index("by_status", ["status"]),
 ```
 
-## 🎨 Design Implementation
-
-### Breakpoints
-- **Mobile**: 375px - 767px
-- **Tablet**: 768px - 1439px
-- **Desktop**: 1440px+
-
-### Color Palette
-```css
---primary: #D87D4A;        /* Audiophile Orange */
---primary-hover: #FBAF85;
---dark: #101010;           /* Almost Black */
---light: #F1F1F1;          /* Off White */
---white: #FFFFFF;
---error: #CD2C2C;
-```
-
-### Typography
-- **Headings**: Manrope Bold
-- **Body**: Manrope Regular/Medium
-- **Weights**: 400, 500, 700
-
-## 📧 Email Configuration
+## Email Configuration
 
 ### Setting up Resend
 
@@ -225,14 +202,13 @@ orders: defineTable({     //unique order identifier
 4. Add to `.env.local` as `RESEND_API_KEY`
 
 ### Email Features
-- ✅ Responsive HTML design
-- ✅ Order summary with product images
-- ✅ Itemized pricing breakdown
-- ✅ Shipping information
-- ✅ Brand-consistent styling
-- ✅ Call-to-action button
+- Responsive HTML design
+- Order summary with product images
+- Itemized pricing breakdown
+- Shipping information
+- Brand-consistent styling
+- Call-to-action button
 
-## 🧪 Testing
 
 ### Checkout Testing Checklist
 
@@ -246,63 +222,16 @@ orders: defineTable({     //unique order identifier
 - [ ] User redirects to confirmation page
 - [ ] Back button doesn't resubmit order
 
-
-## 🚢 Deployment
-
-### Deploy to Vercel
-
-1. **Push to GitHub**
-```bash
-git add .
-git commit -m "Initial commit"
-git push origin main
-```
-
-2. **Connect to Vercel**
-- Go to [vercel.com](https://vercel.com/)
-- Import your repository
-- Add environment variables
-
-3. **Configure Convex for Production**
-```bash
-npx convex deploy
-```
-
-Update `NEXT_PUBLIC_CONVEX_URL` in Vercel with your production URL.
-
-4. **Update Resend domain**
-- Add your production domain to Resend
-- Update `NEXT_PUBLIC_APP_URL` environment variable
-
-### Environment Variables for Production
-Ensure all these are set in Vercel:
-- `CONVEX_DEPLOYMENT`
-- `NEXT_PUBLIC_CONVEX_URL`
-- `RESEND_API_KEY`
-- `RESEND_FROM_EMAIL`
-- `NEXT_PUBLIC_APP_URL`
-
-## 🔧 Development Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npx convex dev       # Start Convex development
-npx convex deploy    # Deploy Convex to production
-```
-
 ## ♿ Accessibility Features
 
-- ✅ Semantic HTML structure
-- ✅ ARIA labels on interactive elements
-- ✅ Keyboard navigation support
-- ✅ Focus visible states
-- ✅ Screen reader announcements for cart updates
-- ✅ Form error announcements
-- ✅ Color contrast compliance (WCAG AA)
-- ✅ Alt text for all images
+-  Semantic HTML structure
+-  ARIA labels on interactive elements
+-  Keyboard navigation support
+-  Focus visible states
+-  Screen reader announcements for cart updates
+-  Form error announcements
+-  Color contrast compliance (WCAG AA)
+-  Alt text for all images
 
 ## 🐛 Known Issues & Limitations
 
@@ -311,7 +240,7 @@ npx convex deploy    # Deploy Convex to production
 - Image optimization requires manual asset preparation
 - No payment gateway integration (cash on delivery only)
 
-## 📝 Future Enhancements
+##  Future Enhancements
 
 - [ ] User authentication and order history
 - [ ] Real payment gateway integration (Stripe)
